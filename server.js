@@ -19,12 +19,14 @@ const connection = mysql.createConnection({
 const view = () => {
     console.log("VIEW")
 
-    connection.query("SELECT * FROM employee"), (err,data)=>{
+    connection.query("SELECT * FROM employee", (err,data)=>{
 
         if(err) throw err;
         console.log(data);
-        
-    }
+        for (const employee of data){
+        console.log(`Employee Added: ${employee.first_name} ${employee.last_name} Role ID: ${employee.role_id} Manager ID: ${employee.manager_id}`)
+        };
+    });
     
 };
 
@@ -78,6 +80,7 @@ const add = () => {
 
             if(err) throw err;
             console.log(`Item ${answers.firstName} has been added`)
+            
             view();
         }
     )
