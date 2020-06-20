@@ -22,7 +22,7 @@ const view = () => {
     connection.query("SELECT * FROM employee", (err,data)=>{
 
         if(err) throw err;
-        console.log(data);
+        //console.log(data);
         for (const employee of data){
         console.log(`Employee Added: ${employee.first_name} ${employee.last_name} Role ID: ${employee.role_id} Manager ID: ${employee.manager_id}`)
         };
@@ -97,11 +97,140 @@ const update = () => {
 
 
 
+}
+
+const addRole = () =>{
+
+    inquirer.prompt([
+
+        {
+            type:"input",
+            message: "Title",
+            name: "title"
+
+        },
+
+        {
+            type:"input",
+            message: "Salary",
+            name: "salary"
+
+        },
+
+        {
+            type:"input",
+            message: "Department ID",
+            name: "departmentID"
+
+        },
+
+
+
+    ]).then((answers) => {
+
+        connection.query("INSERT INTO role SET ?", 
+        
+        {
+
+            title: answers.title,
+            salary: answers.salary,
+            department_id: answers.departmentID
+            
+        },
+        (err)=>{
+
+            if(err) throw err;
+            console.log(`Role ${answers.title} has been added`);
+            viewRole();
+            
+        }
+    )
+
+    
+    
+    
+})
+
+}
+
+const viewRole = () =>{
+
+
+
+    connection.query("SELECT * FROM role", (err,data)=>{
+
+
+        if (err) throw err
+        //console.log(data);
+
+        for (const role of data){
+            console.log(`Role: ${role.title} Salary: ${role.salary} Department: ${role.department_id}`)
+            };
+    })
+
 
 
 }
 
+const addDepartment = () =>{
 
+
+    inquirer.prompt([
+
+        {
+            type:"input",
+            message: "Department name",
+            name: "department"
+
+        },
+
+    
+
+
+
+    ]).then((answers) => {
+
+        connection.query("INSERT INTO department SET ?", 
+        
+        {
+
+            name: answers.department
+            
+        },
+        (err)=>{
+
+            if(err) throw err;
+            console.log(`Department ${answers.department} has been added`);
+            viewDepartment();
+            
+        }
+    )
+
+    
+    
+    
+})
+
+
+}
+
+const viewDepartment = () => {
+
+    connection.query("SELECT * FROM department", (err,data)=>{
+
+
+        if (err) throw err
+        //console.log(data);
+
+        for (const department of data){
+            console.log(`Department: ${department.name}`)
+            };
+    })
+
+
+
+
+}
 //function to kick off app
 const start = () => {
 
@@ -112,7 +241,7 @@ const start = () => {
         {
             type: "list",
             message:"What would you like to do?",
-            choices: ["View Employees", "Add Employee", "Update Employee"],
+            choices: ["View Employees", "Add Employee", "Update Employee", "Add Role", "View Roles", "Add Department", "View Departments"],
             name: "choice"
         
         }
@@ -130,6 +259,14 @@ const start = () => {
             case "Update Employee":
                 //return //function 
                 return update();
+            case "Add Role":
+                return addRole();    
+            case "View Roles":
+                return viewRole();
+            case "Add Department":
+                return addDepartment();   
+            case "View Departments":
+                return viewDepartment();     
             default:     
             connection.end();
 
