@@ -238,6 +238,9 @@ const employeeDepartment = () => {
         if(err) throw err
         console.log(data);
 
+        for (const all of data){
+            console.log(`Name: ${all.first_name} ${all.last_name} Department: ${all.name}`)
+            };
         //console.log(`${data[0].first_name} ${data[0].last_name} ${data[0].name}`)
 
     })
