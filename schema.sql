@@ -36,3 +36,12 @@ CREATE TABLE employee (
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("Shannon", "Kearney",1,2 );
 SELECT * FROM employee;
+
+SELECT employee.id, employee.first_name, employee.last_name, department.name 
+FROM employee INNER JOIN department ON employee.id = department.id;
+
+DELETE FROM employee;
+
+DELETE FROM department;
+
+DELETE FROM role;

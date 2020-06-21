@@ -24,7 +24,7 @@ const view = () => {
         if(err) throw err;
         //console.log(data);
         for (const employee of data){
-        console.log(`Employee Added: ${employee.first_name} ${employee.last_name} Role ID: ${employee.role_id} Manager ID: ${employee.manager_id}`)
+        console.log(`Employee : ${employee.first_name} ${employee.last_name} Role ID: ${employee.role_id} Manager ID: ${employee.manager_id}`)
         };
     });
     
@@ -79,7 +79,7 @@ const add = () => {
         (err)=>{
 
             if(err) throw err;
-            console.log(`Item ${answers.firstName} has been added`)
+            console.log(`Employee ${answers.firstName} has been added`)
             
             view();
         }
@@ -204,10 +204,7 @@ const addDepartment = () =>{
             viewDepartment();
             
         }
-    )
-
-    
-    
+    )  
     
 })
 
@@ -230,6 +227,24 @@ const viewDepartment = () => {
 
 
 
+};
+
+
+const employeeDepartment = () => {
+
+    connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.name FROM employee INNER JOIN department ON employee.id = department.id",
+    (err,data) =>{
+
+        if(err) throw err
+        console.log(data);
+
+        //console.log(`${data[0].first_name} ${data[0].last_name} ${data[0].name}`)
+
+    })
+    
+
+
+
 }
 //function to kick off app
 const start = () => {
@@ -241,7 +256,7 @@ const start = () => {
         {
             type: "list",
             message:"What would you like to do?",
-            choices: ["View Employees", "Add Employee", "Update Employee", "Add Role", "View Roles", "Add Department", "View Departments"],
+            choices: ["View Employees", "Add Employee", "Update Employee", "Add Role", "View Roles", "Add Department", "View Departments", "Employees By Department"],
             name: "choice"
         
         }
@@ -266,7 +281,9 @@ const start = () => {
             case "Add Department":
                 return addDepartment();   
             case "View Departments":
-                return viewDepartment();     
+                return viewDepartment(); 
+            case "Employees By Department":
+                return employeeDepartment();
             default:     
             connection.end();
 
@@ -276,11 +293,6 @@ const start = () => {
     })
 
 }
-
-
-
-
-
 
 
 
