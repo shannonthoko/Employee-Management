@@ -27,7 +27,7 @@ const view = () => {
         console.log(`Employee : ${employee.first_name} ${employee.last_name} Role ID: ${employee.role_id} Manager ID: ${employee.manager_id}`)
         };
     });
-    
+    start();
 };
 
 //function to add emplyee
@@ -82,6 +82,8 @@ const add = () => {
             console.log(`Employee ${answers.firstName} has been added`)
             
             view();
+            start();
+            
         }
     )
 
@@ -93,8 +95,50 @@ const add = () => {
 
 //function to update employee
 const update = () => {
-    //console.log("UPDATE")
+    
+    inquirer.prompt([
 
+
+        {
+
+            type: "input", 
+            message: "What employee by first name would you like to update?",
+            name: "updateName"
+        },
+
+        {
+
+            type: "input",
+            message: "New role ID?",
+            name: "newRole"
+        }, 
+
+        {
+
+            type: "input",
+            message: "New manager ID?",
+            name: "newManager"
+        }
+
+    ]).then((answer) => {
+
+       
+         
+        connection.query("UPDATE employee SET ?  WHERE ?" ,{
+
+            role_id: answer.newRole,
+            manager_id: answer.newManager,
+
+
+        },(err,data)=>{
+
+            if(err) throw (err);
+
+            start();
+            
+        })
+
+    })
 
 
 }
@@ -142,6 +186,7 @@ const addRole = () =>{
             if(err) throw err;
             console.log(`Role ${answers.title} has been added`);
             viewRole();
+            start();
             
         }
     )
@@ -165,9 +210,9 @@ const viewRole = () =>{
 
         for (const role of data){
             console.log(`Role: ${role.title} Salary: ${role.salary} Department: ${role.department_id}`)
-            };
+        };
+        start();
     })
-
 
 
 }
@@ -202,7 +247,7 @@ const addDepartment = () =>{
             if(err) throw err;
             console.log(`Department ${answers.department} has been added`);
             viewDepartment();
-            
+            start();
         }
     )  
     
@@ -222,8 +267,8 @@ const viewDepartment = () => {
         for (const department of data){
             console.log(`Department: ${department.name}`)
             };
+            start();
     })
-
 
 
 
@@ -236,13 +281,13 @@ const employeeDepartment = () => {
     (err,data) =>{
 
         if(err) throw err
-        console.log(data);
+        
 
         for (const all of data){
             console.log(`Name: ${all.first_name} ${all.last_name} Department: ${all.name}`)
             };
         //console.log(`${data[0].first_name} ${data[0].last_name} ${data[0].name}`)
-
+        start();
     })
     
 
@@ -275,7 +320,6 @@ const start = () => {
                 //return //function 
                 return add();
             case "Update Employee":
-                //return //function 
                 return update();
             case "Add Role":
                 return addRole();    

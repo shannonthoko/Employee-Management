@@ -45,3 +45,5 @@ DELETE FROM employee;
 DELETE FROM department;
 
 DELETE FROM role;
+
+UPDATE employee SET role_id = , manager_id =  WHERE first_name = "";
